@@ -1,140 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TS DOCENTES</title>
-    <link rel="icon" href="https://i.ibb.co/T1jVqPw/favicon-32x32.png" type="image/png">
-    <link rel="manifest" href="manifest.json">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh; /* Altura completa */
-        }
-        
-        iframe {
-            flex-grow: 1; /* Permitir que el iframe crezca */
-            border: none; /* Eliminar borde */
-        }
-
-        #install-banner {
-            background-color: #f8f9fa; /* Fondo claro para visibilidad */
-            padding: 10px;
-            text-align: center;
-            display: none; /* Oculto por defecto */
-        }
-    </style>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6200ea">
+  <title>PWA con Menú Vertical e Imagen</title>
+  <!-- Manifiesto PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    header {
+      background-color: #6200ea;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      position: relative;
+    }
+    .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+      color: white;
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    nav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    nav a {
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 18px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      background-color: #575757;
+    }
+    nav img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .menu-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 36px;
+    }
+    main {
+      padding: 20px;
+      margin-top: 20px; /* Añadido para evitar que el contenido se superponga al menú */
+      text-align: center; /* Centrado del contenido */
+    }
+    main h1 {
+      margin-bottom: 20px;
+    }
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .button-container img {
+      margin: 10px 0;
+      width: 80%;
+      max-width: 200px;
+    }
+    /* Banner de instalación */
+    .install-banner {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: none; /* Inicialmente oculto */
+      z-index: 999;
+    }
+    .install-banner button {
+      background-color: #6200ea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .install-banner button:hover {
+      background-color: #4500b3;
+    }
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      header {
+        font-size: 18px;
+      }
+      nav a {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <iframe src="https://tsdocentesmx.blogspot.com/p/primer-grado.html" width="100%" height="600px"></iframe>
+  <header>
+    <span class="menu-btn" onclick="openMenu()">☰</span>
+    Mi PWA Responsive con Imagen
+  </header>
+
+  <nav id="myNav">
+    <a href="javascript:void(0)" class="menu-close-btn" onclick="closeMenu()">&times;</a>
+    <!-- Imagen del menú -->
+    <img src="https://via.placeholder.com/250x150" alt="Imagen del Menú">
+    <a href="#home">Inicio</a>
+    <a href="#services">Servicios</a>
+    <a href="#contact">Contacto</a>
+    <a href="#about">Acerca de</a>
+  </nav>
+
+  <main>
+    <h1>¡Bienvenido a Mi PWA!</h1>
+    <p>A continuación, encontrarás algunos botones con imágenes. Haz clic en ellos para más opciones.</p>
     
-    <div id="install-banner">
-        <p style="margin: 0;">¡Instala nuestra aplicación para una mejor experiencia!</p>
-        <button id="install-button">Instalar</button>
+    <!-- Botones de imagen en fila -->
+    <div class="button-container">
+      <a href="#"><img src="https://via.placeholder.com/150" alt="Botón 1"></a>
+      <a href="#"><img src="https://via.placeholder.com/150" alt="Botón 2"></a>
+      <a href="#"><img src="https://via.placeholder.com/150" alt="Botón 3"></a>
     </div>
+  </main>
 
-    <script src="main.js"></script>
-    <script>
-        // Configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyA4TDdmsxfthFR4PTuBAhEQdutP06i9c2I",
-            authDomain: "telesecundaria-ts.firebaseapp.com",
-            projectId: "telesecundaria-ts",
-            storageBucket: "telesecundaria-ts.appspot.com",
-            messagingSenderId: "572048540410",
-            appId: "1:572048540410:web:e08e9c3971b191e92cbf43",
-            measurementId: "G-T6V43KVHRX"
-        };
+  <div class="install-banner" id="installBanner">
+    <p>¡Para mejor funcionamiento, instala nuestra PWA en tu dispositivo!</p>
+    <button id="installButton">Instalar</button>
+  </div>
 
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const messaging = firebase.messaging();
+  <script>
+    function openMenu() {
+      document.getElementById("myNav").style.width = "250px";
+    }
 
-        // Solicitar permiso para notificaciones
-        Notification.requestPermission().then(function(permission) {
-            if (permission === 'granted') {
-                console.log('Permiso de notificaciones concedido.');
-                messaging.getToken({ vapidKey: 'qcB9jKz9lOP6YOuk4fvtUG_KHpXv1KdSjqQJdjDZbFs' })
-                    .then(function(token) {
-                        if (token) {
-                            console.log('Token de dispositivo:', token);
-                            // Envía el token a tu servidor aquí
-                        } else {
-                            console.log('No se obtuvo token.');
-                        }
-                    })
-                    .catch(function(err) {
-                        console.log('Error al obtener el token de notificación.', err);
-                    });
-            } else {
-                console.log('Permiso para notificaciones denegado.');
-            }
-        }).catch(function(err) {
-            console.log('Error al solicitar permiso para notificaciones:', err);
+    function closeMenu() {
+      document.getElementById("myNav").style.width = "0";
+    }
+
+    // Registro de Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+        console.log('Service Worker registrado con éxito:', registration);
+      }).catch(function(error) {
+        console.log('Error al registrar el Service Worker:', error);
+      });
+    }
+
+    // Mostrar banner de instalación
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').style.display = 'block';
+    });
+
+    // Manejar instalación
+    document.getElementById('installButton').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          console.log(choiceResult.outcome);
+          deferredPrompt = null;
+          document.getElementById('installBanner').style.display = 'none';
         });
-
-        // Manejar mensajes en primer plano
-        messaging.onMessage(function(payload) {
-            console.log('Mensaje recibido. ', payload);
-            const notificationTitle = payload.notification.title || 'Título por defecto';
-            const notificationOptions = {
-                body: payload.notification.body || 'Cuerpo de notificación por defecto',
-                icon: payload.notification.icon || 'https://i.ibb.co/T1jVqPw/favicon-32x32.png'
-            };
-
-            const notification = new Notification(notificationTitle, notificationOptions);
-            
-            // Reproducir sonido
-            const audio = new Audio('http://www.sonidosmp3gratis.com/sounds/messenger-tono-mensaje-.mp3');
-            audio.play().catch(function(err) {
-                console.log('Error al reproducir el sonido:', err);
-            });
-        });
-
-        // Registrar el Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/firebase-messaging-sw.js')
-                .then(function(registration) {
-                    console.log('Service Worker registrado con éxito:', registration);
-                    messaging.useServiceWorker(registration);
-                })
-                .catch(function(err) {
-                    console.log('Error al registrar el Service Worker:', err);
-                });
-        }
-
-        // Manejo del banner de instalación
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallBanner();
-        });
-
-        function showInstallBanner() {
-            const installBanner = document.getElementById('install-banner');
-            installBanner.style.display = 'block';
-
-            const installButton = document.getElementById('install-button');
-            installButton.addEventListener('click', () => {
-                installBanner.style.display = 'none';
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Usuario aceptó la instalación');
-                    } else {
-                        console.log('Usuario rechazó la instalación');
-                    }
-                    deferredPrompt = null;
-                });
-            });
-        }
-    </script>
+      }
+    });
+  </script>
 </body>
 </html>
